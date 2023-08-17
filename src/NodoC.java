@@ -1,4 +1,3 @@
-package Procesos;
 
 public class NodoC {
     
