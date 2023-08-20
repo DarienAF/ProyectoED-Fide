@@ -1,0 +1,2 @@
+Jugador: Darien, Puntos: 75
+Jugador: Carlos, Puntos: 15

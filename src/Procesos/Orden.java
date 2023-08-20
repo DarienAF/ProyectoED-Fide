@@ -1,3 +1,5 @@
+package Procesos;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,8 @@ public class Orden {
     private int idOrden;
     private boolean completado;
 
-    public Orden(String tipoHamburguesa, int puntos, int idOrden, boolean completado) {
+    public Orden(String tipoHamburguesa, int puntos, int idOrden, 
+    boolean completado) {
         this.tipoHamburguesa = tipoHamburguesa;
         this.puntos = puntos;
         this.idOrden = idOrden;

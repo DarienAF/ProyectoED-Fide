@@ -1,3 +1,5 @@
+package Procesos;
+
 import java.util.Random;
 
 import java.util.concurrent.Executors;
@@ -49,7 +51,9 @@ public class Cola {
     }
     
     public void generarOrdenesAleatorias() {
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        ScheduledExecutorService executor = 
+        Executors.newSingleThreadScheduledExecutor();
+        
         executor.scheduleAtFixedRate(() -> {
             if (3 > largo) {
                 Orden nuevaOrden = generarOrdenAleatoria();

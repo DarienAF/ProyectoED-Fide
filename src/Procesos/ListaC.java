@@ -1,3 +1,5 @@
+package Procesos;
+
 import java.util.Random;
 
 public class ListaC {
@@ -51,7 +53,7 @@ public class ListaC {
 
     public void mueveCintaContrario() {
         if (cabeza == null) {
-            System.out.println("La cinta transportadora esta vacía. No se puede mover.");
+            System.out.println("La cinta transportadora esta vacía.");
             return;
         }
 
@@ -66,7 +68,7 @@ public class ListaC {
 
     public void mueveCinta() {
         if (cabeza == null) {
-            System.out.println("La cinta transportadora esta vacía. No se puede mover.");
+            System.out.println("La cinta transportadora esta vacía..");
             return;
         }
         NodoC nuevoUltimo = cabeza;
@@ -144,10 +146,14 @@ public class ListaC {
         NodoC aux = cabeza;
         String s = "Lista: \n";
         if (aux != null) {
-            s += "ID: " + aux.getDato().getIdCinta() + ", Ingrediente: " + aux.getDato().getIngrediente() + "\n";
+            s += "ID: " + aux.getDato().getIdCinta() + ", Ingrediente: " + 
+            aux.getDato().getIngrediente() + "\n";
+            
             aux = aux.getNext();
             while (aux != cabeza) {
-                s += "ID: " + aux.getDato().getIdCinta() + ", Ingrediente: " + aux.getDato().getIngrediente() + "\n";
+                s += "ID: " + aux.getDato().getIdCinta() + ", Ingrediente: " + 
+                aux.getDato().getIngrediente() + "\n";
+                
                 aux = aux.getNext();
             }
         } else {

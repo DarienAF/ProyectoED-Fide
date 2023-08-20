@@ -1,3 +1,5 @@
+package Procesos;
+
 
 public class Cinta{
     private int idCinta;
