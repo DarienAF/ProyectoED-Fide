@@ -1,5 +1,7 @@
+
 package Procesos;
 
+import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -9,12 +11,11 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
-
-public class NewJFrame extends javax.swing.JFrame { 
+public class Interfaz extends javax.swing.JFrame {
     private Timer timer;
     private int minutes = 5;
     private int seconds = 0;
-    private boolean inicio = false;    
+    private boolean inicio = false;  
     private int totalPoints = 0;
     private DatosManager datosManager;
     
@@ -31,11 +32,9 @@ public class NewJFrame extends javax.swing.JFrame {
     private Map<String, ImageIcon> imagenesMap;
     
     // Instanciar la cola
-    private Cola cola = new Cola(); 
+    private Cola cola = new Cola();
     
-    
-    
-    public NewJFrame() {
+    public Interfaz() {
         initComponents();
         cargarImagenes();
         listaC = new ListaC(); 
@@ -45,7 +44,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         datosManager = new DatosManager();
     }
-        
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -80,7 +78,6 @@ public class NewJFrame extends javax.swing.JFrame {
         mesa = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -253,226 +250,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-private void cargarImagenes() {
-    imagenesMap = new HashMap<>();//HashMap para almacenar las imágenes
-
-    // Cargar imagen de la hamburguesa
-    ImageIcon imagenHamburguesa = new ImageIcon(getClass().getResource
-    ("/img/hamburguesa.png"));
-    imagenesMap.put("Hamburguesa", imagenHamburguesa);
-    
-    ImageIcon imagenCarne = new ImageIcon(getClass().getResource
-    ("/img/carne.png"));
-    imagenesMap.put("Carne", imagenCarne);
-
-    ImageIcon imagenLechuga = new ImageIcon(getClass().getResource
-    ("/img/lechuga.png"));
-    imagenesMap.put("Lechuga", imagenLechuga);
-
-    ImageIcon imagenQueso = new ImageIcon(getClass().getResource
-    ("/img/queso.png"));
-    imagenesMap.put("Queso", imagenQueso);
-
-    ImageIcon imagenPan = new ImageIcon(getClass().getResource
-    ("/img/pan.png"));
-    imagenesMap.put("Pan", imagenPan);
-
-    // Cargar imagen de la bomba
-    ImageIcon imagenBomb = new ImageIcon(getClass().getResource
-    ("/img/bomba.png"));
-    
-    imagenesMap.put("Ingrediente Especial", imagenBomb);
-}
-
-     
-    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-
-          // Iniciar el temporizador solo si aún no está en marcha
-        if (timer == null || !timer.isRunning()) {
-            timer = new Timer(1000, new ActionListener() {
-                
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (minutes == 0 && seconds == 0) {
-                        timer.stop();
-                        JOptionPane.showMessageDialog(NewJFrame.this, 
-                        "¡Tiempo terminado!");
-                        
-                        // Guardar los datos cuando el temporizador finalice
-                             datosManager.guardarDatos(name, totalPoints);
-                            
-                    } else {
-                        if (seconds == 0) {
-                            minutes--;
-                            seconds = 59;
-                        } else {
-                            seconds--;
-                        }
-                        blnTime.setText(String.format("%d:%02d", minutes, seconds));
-                    }
-                }
-            });
-            timer.start();
-            inicio = true;
-            //
-         Orden ordenFrente = cola.obtenerDatos();
-
-    if (ordenFrente != null) {
-        
-        // Obtener los datos de la orden
-        String tipoHamburguesa = ordenFrente.getTipoHamburguesa();
-        int puntos = ordenFrente.getPuntos();
-        List<String> ingredientes = ordenFrente.getIngredientesR();
-
-        // Actualizar los labels 
-        lblTipoH.setText(tipoHamburguesa);
-        lblPuntos.setText("PUNTOS: " + puntos);
-        
-        // Actualiza el texto de lbl1 con el primer ingrediente si hay 
-        //al menos un ingrediente en la lista ingredientes
-        //de lo contrario, establece el texto en una cadena vacía
-        lbl1.setText(ingredientes.size() >= 1 ? ingredientes.get(0) : "");
-        lbl2.setText(ingredientes.size() >= 2 ? ingredientes.get(1) : "");
-        lbl3.setText(ingredientes.size() >= 3 ? ingredientes.get(2) : "");
-        lbl4.setText(ingredientes.size() >= 4 ? ingredientes.get(3) : "");
-    } else {
-        
-        JOptionPane.showMessageDialog(this, "La cola está vacía. ");
-    }    
-        }
-    }//GEN-LAST:event_btnStartActionPerformed
-
-    private void btnResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultadosActionPerformed
-
-        String datos = datosManager.leerDatos();
-
-        if (datos.isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-            "No hay datos en el archivo Resultados.txt.");
-        } else {
-            JOptionPane.showMessageDialog(this, 
-            "RESULTADOS:\n" + datos);
-        }
-    }//GEN-LAST:event_btnResultadosActionPerformed
-
-    private void btnReglasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReglasActionPerformed
-        JOptionPane.showMessageDialog(this, 
- "-------------------------REGLAS DE LA COCINA-------------------------\n"
-+ "1- Prepárate para cocinar, sin pulsar Start nada podrás preparar\n"
-+ "2- En este juego de destreza y sazon, evita la bomba con precaución.\n"
-+ "3- No debes temer, reiniciar el juego es lo mejor a hacer\n"
-+ "4- Sigue la receta sin improvisar y deliciosas hamburguesa podrás crear.\n"
-+ "5- Si el esfuerzo buscas inmortalizar, cinco minutos tendrás que esperar.\n"
-+ "6- Entre cada orden veinte segundos de espera, "
-+ "son la clave para la clientela");
-    }//GEN-LAST:event_btnReglasActionPerformed
-
-    private void btnMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoverActionPerformed
-         if (!inicio) {
-        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
-    } else {
-        listaC.mueveCinta();
-        actualizarIngrediente(); 
-         }
-    }//GEN-LAST:event_btnMoverActionPerformed
-
-    private void btnContrarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContrarioActionPerformed
-         if (!inicio) {
-        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado. ");
-    } else {
-        listaC.mueveCintaContrario(); 
-        actualizarIngrediente();
-         }
-    }//GEN-LAST:event_btnContrarioActionPerformed
-
-    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
-         if (!inicio) {
-        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
-    } else {
-        String ingrediente;
-        ingrediente = listaC.seleccionarIngrediente();
-        listaC.rellenarCinta();
-        actualizarIngrediente(); // Actualizar el JLabel de ingrediente 
-
-        // Verificar si el ingrediente es Ingrediente Especial
-        if (ingrediente.equals("Ingrediente Especial")) {
-
-            if (timer != null && timer.isRunning()) {
-                timer.stop();
-            }
-            // Establecer inicio como false
-            inicio = false;
-            JOptionPane.showMessageDialog(this, "Haz explotado la cocina, "
-            + "reinicia el juego.");
-            
-        } else {
-            
-            if (listaAuxiliar.size() < 4) {
-                listaAuxiliar.add(ingrediente);
-            } else {
-
-                JOptionPane.showMessageDialog(this, "La lista de ingredientes "
-                + "ya contiene 4 elementos.");
-            }
-
-            // Actualizar las etiquetas con los ingredientes seleccionados
-            labelIngrediente1.setText(listaAuxiliar.size() >= 1 
-            ? listaAuxiliar.get(0) : "");
-            
-            labelIngrediente2.setText(listaAuxiliar.size() >= 2 
-            ? listaAuxiliar.get(1) : "");
-            
-            labelIngrediente3.setText(listaAuxiliar.size() >= 3 
-            ? listaAuxiliar.get(2) : "");
-            
-            labelIngrediente4.setText(listaAuxiliar.size() >= 4 
-            ? listaAuxiliar.get(3) : "");
-        }
-    }
-    }//GEN-LAST:event_btnSeleccionarActionPerformed
-
-    private void btnCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompararActionPerformed
-     if (!inicio) {
-        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
-    } else {
-            compararListas();
-
-       // Actualizar las etiquetas 
-       labelIngrediente1.setIcon(null);
-       labelIngrediente2.setIcon(null);
-       labelIngrediente3.setIcon(null);
-       labelIngrediente4.setIcon(null);
-     }
-    }//GEN-LAST:event_btnCompararActionPerformed
-
-    private void btnBasureroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBasureroActionPerformed
-       if (!inicio) {
-        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
-    } else {
-
-        String ingredienteActual = listaC.getIngredienteActual();
-
-        listaC.eliminarIngredienteActual();
-
-        listaC.rellenarCinta();
-
-        actualizarIngrediente();
-
-        if (ingredienteActual.equals("Ingrediente Especial")) {
-            // Finalizar el temporizador de inmediato
-            timer.setInitialDelay(0);
-            if (timer != null && timer.isRunning()) {
-                timer.stop();
-                
-            }
-
-            inicio = false;
-            JOptionPane.showMessageDialog(this, "Haz explotado la cocina, "
-            + "reinicia el juego.");
-        }
-    }
-    }//GEN-LAST:event_btnBasureroActionPerformed
-
+    //
+    //
      // Método para actualizar el JLabel
     private void actualizarIngrediente() {
     String ingredienteActual = listaC.getIngredienteActual();
@@ -486,7 +265,6 @@ private void cargarImagenes() {
     
 }
     
-   
     private void compararListas() {
     Orden ordenFrente = cola.obtenerDatos();
 
@@ -544,7 +322,229 @@ private void cargarImagenes() {
         + "No hay órdenes para comparar.");
     }
 }
+    private void cargarImagenes() {
+    imagenesMap = new HashMap<>();//HashMap para almacenar las imágenes
+
+    // Cargar imagen de la hamburguesa
+    ImageIcon imagenHamburguesa = new ImageIcon(getClass().getResource
+    ("/img/hamburguesa.png"));
+    imagenesMap.put("Hamburguesa", imagenHamburguesa);
     
+    ImageIcon imagenCarne = new ImageIcon(getClass().getResource
+    ("/img/carne.png"));
+    imagenesMap.put("Carne", imagenCarne);
+
+    ImageIcon imagenLechuga = new ImageIcon(getClass().getResource
+    ("/img/lechuga.png"));
+    imagenesMap.put("Lechuga", imagenLechuga);
+
+    ImageIcon imagenQueso = new ImageIcon(getClass().getResource
+    ("/img/queso.png"));
+    imagenesMap.put("Queso", imagenQueso);
+
+    ImageIcon imagenPan = new ImageIcon(getClass().getResource
+    ("/img/pan.png"));
+    imagenesMap.put("Pan", imagenPan);
+
+    // Cargar imagen de la bomba
+    ImageIcon imagenBomb = new ImageIcon(getClass().getResource
+    ("/img/bomba.png"));
+    
+    imagenesMap.put("Ingrediente Especial", imagenBomb);
+}
+    //
+    //
+    private void btnReglasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReglasActionPerformed
+        JOptionPane.showMessageDialog(this, 
+ "-------------------------REGLAS DE LA COCINA-------------------------\n"
++ "1- Prepárate para cocinar, sin pulsar Start nada podrás preparar\n"
++ "2- En este juego de destreza y sazon, evita la bomba con precaución.\n"
++ "3- No debes temer, reiniciar el juego es lo mejor a hacer\n"
++ "4- Sigue la receta sin improvisar y deliciosas hamburguesa podrás crear.\n"
++ "5- Si el esfuerzo buscas inmortalizar, cinco minutos tendrás que esperar.\n"
++ "6- Entre cada orden veinte segundos de espera, "
++ "son la clave para la clientela");
+    }//GEN-LAST:event_btnReglasActionPerformed
+
+    private void btnResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResultadosActionPerformed
+        String datos = datosManager.leerDatos();
+
+        if (datos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+            "No hay datos en el archivo Resultados.txt.");
+        } else {
+            JOptionPane.showMessageDialog(this, 
+            "RESULTADOS:\n" + datos);
+        }
+    }//GEN-LAST:event_btnResultadosActionPerformed
+
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        //Inicio de cronometro
+        if (timer == null || !timer.isRunning()) {
+            timer = new Timer(1000, new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (minutes == 0 && seconds == 0) {
+                        timer.stop();
+                        JOptionPane.showMessageDialog(Interfaz.this, 
+                        "¡Tiempo terminado!");
+                        
+                        // Guardar los datos cuando el temporizador finalice
+                             datosManager.guardarDatos(name, totalPoints);
+                            
+                    } else {
+                        if (seconds == 0) {
+                            minutes--;
+                            seconds = 59;
+                        } else {
+                            seconds--;
+                        }
+                        blnTime.setText(String.format("%d:%02d", minutes, 
+                        seconds));
+                    }
+                }
+            });
+            timer.start();
+            inicio = true;
+            //
+     //Datos de Orden       
+     Orden ordenFrente = cola.obtenerDatos();
+     
+    
+    if (ordenFrente != null) {
+        
+        // Obtener los datos de la orden
+        String tipoHamburguesa = ordenFrente.getTipoHamburguesa();
+        int puntos = ordenFrente.getPuntos();
+        List<String> ingredientes = ordenFrente.getIngredientesR();
+
+        // Actualizar los labels 
+        lblTipoH.setText(tipoHamburguesa);
+        lblPuntos.setText("PUNTOS: " + puntos);
+        
+        // Actualiza el texto de lbl1 con el primer ingrediente si hay 
+        //al menos un ingrediente en la lista ingredientes
+        //de lo contrario, establece el texto en una cadena vacía
+        lbl1.setText(ingredientes.size() >= 1 ? ingredientes.get(0) : "");
+        lbl2.setText(ingredientes.size() >= 2 ? ingredientes.get(1) : "");
+        lbl3.setText(ingredientes.size() >= 3 ? ingredientes.get(2) : "");
+        lbl4.setText(ingredientes.size() >= 4 ? ingredientes.get(3) : "");
+    } else {
+        
+        JOptionPane.showMessageDialog(this, "La cola está vacía. ");
+    }    
+        }
+    }//GEN-LAST:event_btnStartActionPerformed
+
+    private void btnMoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoverActionPerformed
+        if (!inicio) {
+        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
+    } else {
+        listaC.mueveCinta();
+        actualizarIngrediente(); 
+         }
+    }//GEN-LAST:event_btnMoverActionPerformed
+
+    private void btnContrarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContrarioActionPerformed
+        if (!inicio) {
+        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado. ");
+    } else {
+        listaC.mueveCintaContrario(); 
+        actualizarIngrediente();
+         }
+    }//GEN-LAST:event_btnContrarioActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        if (!inicio) {
+        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
+    } else {
+        String ingrediente;
+        ingrediente = listaC.seleccionarIngrediente();
+        listaC.rellenarCinta();
+        actualizarIngrediente(); // Actualizar el JLabel de ingrediente 
+
+        // Verificar si el ingrediente es Ingrediente Especial
+        if (ingrediente.equals("Ingrediente Especial")) {
+
+            if (timer != null && timer.isRunning()) {
+                timer.stop();
+            }
+            // Establecer inicio como false
+            inicio = false;
+            JOptionPane.showMessageDialog(this, "Haz explotado la cocina, "
+            + "reinicia el juego.");
+            System.exit(0);
+            
+        } else {
+            
+            if (listaAuxiliar.size() < 4) {
+                listaAuxiliar.add(ingrediente);
+            } else {
+
+                JOptionPane.showMessageDialog(this, "La lista de ingredientes "
+                + "ya contiene 4 elementos.");
+            }
+
+            // Actualizar las etiquetas con los ingredientes seleccionados
+            labelIngrediente1.setText(listaAuxiliar.size() >= 1 
+            ? listaAuxiliar.get(0) : "");
+            
+            labelIngrediente2.setText(listaAuxiliar.size() >= 2 
+            ? listaAuxiliar.get(1) : "");
+            
+            labelIngrediente3.setText(listaAuxiliar.size() >= 3 
+            ? listaAuxiliar.get(2) : "");
+            
+            labelIngrediente4.setText(listaAuxiliar.size() >= 4 
+            ? listaAuxiliar.get(3) : "");
+        }
+    }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+    private void btnCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompararActionPerformed
+         if (!inicio) {
+        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
+    } else {
+            compararListas();
+
+       // Actualizar las etiquetas 
+       labelIngrediente1.setIcon(null);
+       labelIngrediente2.setIcon(null);
+       labelIngrediente3.setIcon(null);
+       labelIngrediente4.setIcon(null);
+     }
+    }//GEN-LAST:event_btnCompararActionPerformed
+
+    private void btnBasureroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBasureroActionPerformed
+        if (!inicio) {
+        JOptionPane.showMessageDialog(this, "El juego no ha sido iniciado.");
+    } else {
+
+        String ingredienteActual = listaC.getIngredienteActual();
+
+        listaC.eliminarIngredienteActual();
+
+        listaC.rellenarCinta();
+
+        actualizarIngrediente();
+
+        if (ingredienteActual.equals("Ingrediente Especial")) {
+            // Finalizar el temporizador de inmediato
+            timer.setInitialDelay(0);
+            if (timer != null && timer.isRunning()) {
+                timer.stop();
+                
+            }
+
+            inicio = false;
+            JOptionPane.showMessageDialog(this, "Haz explotado la cocina, "
+            + "reinicia el juego.");
+            System.exit(0);
+        }
+    }
+    }//GEN-LAST:event_btnBasureroActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -559,20 +559,20 @@ private void cargarImagenes() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NewJFrame().setVisible(true);
+                new Interfaz().setVisible(true);
             }
         });
     }
